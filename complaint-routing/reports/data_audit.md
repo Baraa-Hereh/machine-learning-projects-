@@ -61,14 +61,18 @@ inference script, since new complaints will not be pre-masked.
 No non-Latin script found. 242 texts flagged for few common English words
 were inspected: all English, heavily masked. Nothing removed.
 
-## 4. Text length (words, first shard)
+## 4. Text length (words, train split)
 
 | Percentile | 50% | 75% | 90% | 95% | 99% | Max |
 |---|---|---|---|---|---|---|
-| Words | 139 | 248 | 395 | 496 | 973 | 5,613 |
+| Words | 133 | 243 | 419 | 586 | 1,212 | 5,617 |
 
-**Decision:** `max_len = 400`. Covers 90% of complaints in full; longer ones
-are truncated, not dropped. To be validated against the 100 ms latency limit.
+**Decision:** `max_len = 420`. Covers 90% of training complaints in full;
+longer ones are truncated, not dropped. Computed on train only. To be
+validated against the 100 ms latency limit.
+
+**Note:** the shortest complaint is one word. Very short complaints may not
+carry enough information to route; to be checked during modelling.
 
 ## 5. Split
 
