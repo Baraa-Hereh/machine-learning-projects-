@@ -1,0 +1,21 @@
+data:
+  raw_dir: data/raw/cfpb_hf
+  raw_glob: "*.parquet"
+  extracted_path: data/processed/complaints_2020-03_2021-03.parquet
+  start_date: "2020-03-01"
+  end_date: "2021-03-31"
+  date_col: date_received
+  text_col: complaint_what_happened
+  columns:
+    - complaint_id
+    - date_received
+    - product
+    - sub_product
+    - complaint_what_happened
+clean:
+  id_col: complaint_id
+  label_col: product
+  mask_token: "[PII]"
+  train_end: "2020-12-31"
+  val_end: "2021-02-28"
+  out_dir: data/processed/splits
