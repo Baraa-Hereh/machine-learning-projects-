@@ -27,3 +27,30 @@ baseline:
   max_iter: 1000
   report_path: reports/baseline_val.json
   model_path: models/baseline_tfidf_lr.joblib
+labels:
+  - Checking or savings account
+  - Credit card or prepaid card
+  - Credit reporting, credit repair services, or other personal consumer reports
+  - Debt collection
+  - Money transfer, virtual currency, or money service
+  - Mortgage
+  - Payday loan, title loan, or personal loan
+  - Student loan
+  - Vehicle loan or lease
+model:
+  vocab_size: 10000
+  max_len: 420
+  embed_dim: 64
+  gru_units: 64
+
+train:
+  seeds: [0]
+  batch_size: 128
+  learning_rate: 0.001
+  max_epochs: 20
+  patience: 3
+  out_dir: models/gru
+  report_path: reports/gru_val.json
+  train_eval_size: 26000
+  train_eval_seed: 42
+  seeds: [0, 1, 2, 3, 4]
