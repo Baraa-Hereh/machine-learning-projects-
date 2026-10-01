@@ -1,4 +1,4 @@
-"""Train the GRU classifier with several seeds and early stopping on validation Macro F1."""
+"""Train the text classifier with several seeds and early stopping on validation Macro F1."""
 
 import json
 import logging
@@ -63,12 +63,18 @@ class MacroF1EarlyStopping(keras.callbacks.Callback):
             self.wait += 1
             if self.wait >= self.patience:
                 self.model.stop_training = True
-
+   
     def on_train_end(self, logs=None):
         if self.best_weights is not None:
             self.model.set_weights(self.best_weights)
 
-
+def run_name(cfg_model: dict) -> str:
+        """Name for model and report paths, e.g. 'mean' or 'mean_sdrop30'."""
+        name = cfg_model["encoder"]
+        rate = cfg_model["embed_dropout"]
+        if rate > 0:
+            name += f"_sdrop{round(rate * 100)}"
+        return name
 def train_one(seed: int, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg: dict, n_classes: int,
               class_weight: dict) -> dict:
     """Train one model with one seed and save it."""
@@ -82,7 +88,8 @@ def train_one(seed: int, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg: dict, n_clas
     model.fit(X_tr, y_tr, batch_size=t["batch_size"], epochs=t["max_epochs"],
               class_weight=class_weight, callbacks=[stopper], verbose=2)
 
-    out = Path(t["out_dir"]) / f"gru_seed{seed}.keras"
+    name = run_name(cfg["model"])
+    out = Path(t["out_dir"]) / name / f"{name}_seed{seed}.keras"
     out.parent.mkdir(parents=True, exist_ok=True)
     model.save(out)
     return {"seed": seed, "best_macro_f1": stopper.best, "best_epoch": stopper.best_epoch,
@@ -93,7 +100,11 @@ def train_one(seed: int, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg: dict, n_clas
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     cfg = load_config(Path("configs/config.yaml"))
-    d, c, labels = cfg["data"], cfg["clean"], cfg["labels"]
+    name = run_name(cfg["model"])
+    report = Path(cfg["train"]["report_dir"]) / f"{name}_val.json"
+    logger.info("run: %s | report: %s", name, report)
+
+    d, c, t, labels = cfg["data"], cfg["clean"], cfg["train"], cfg["labels"]
 
     X_tr, y_tr = load_split(c["out_dir"], "train", d["text_col"], c["label_col"], labels)
     X_va, y_va = load_split(c["out_dir"], "val", d["text_col"], c["label_col"], labels)
@@ -101,23 +112,22 @@ def main() -> None:
     weights = compute_class_weight("balanced", classes=np.arange(len(labels)), y=y_tr)
     class_weight = dict(enumerate(weights))
     logger.info("class weights: %s", {labels[i][:20]: round(w, 2) for i, w in class_weight.items()})
-    t = cfg["train"]
+
     rng = np.random.default_rng(t["train_eval_seed"])
     idx = rng.choice(len(X_tr), size=min(t["train_eval_size"], len(X_tr)), replace=False)
     X_trs, y_trs = X_tr[idx], y_tr[idx]
     logger.info("train eval sample: %d of %d", len(idx), len(X_tr))
+
     results = [train_one(s, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg, len(labels), class_weight)
-               for s in cfg["train"]["seeds"]]
+               for s in t["seeds"]]
 
     scores = [r["best_macro_f1"] for r in results]
     logger.info("macro F1 mean %.4f | min %.4f | max %.4f",
                 np.mean(scores), min(scores), max(scores))
 
-    report = Path(cfg["train"]["report_path"])
     report.parent.mkdir(parents=True, exist_ok=True)
     with open(report, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
-
 
 if __name__ == "__main__":
     main()
