@@ -1,0 +1,148 @@
+{
+  "majority": {
+    "macro_f1": 0.0696796542775102,
+    "weighted_f1": 0.28645963268389374,
+    "per_class": {
+      "Checking or savings account": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1904.0
+      },
+      "Credit card or prepaid card": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 2713.0
+      },
+      "Credit reporting, credit repair services, or other personal consumer reports": {
+        "precision": 0.4567882605907428,
+        "recall": 1.0,
+        "f1-score": 0.6271168884975918,
+        "support": 12109.0
+      },
+      "Debt collection": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 4817.0
+      },
+      "Money transfer, virtual currency, or money service": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1067.0
+      },
+      "Mortgage": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 2507.0
+      },
+      "Payday loan, title loan, or personal loan": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 369.0
+      },
+      "Student loan": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 355.0
+      },
+      "Vehicle loan or lease": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 668.0
+      },
+      "accuracy": 0.4567882605907428,
+      "macro avg": {
+        "precision": 0.0507542511767492,
+        "recall": 0.1111111111111111,
+        "f1-score": 0.0696796542775102,
+        "support": 26509.0
+      },
+      "weighted avg": {
+        "precision": 0.20865551501351634,
+        "recall": 0.4567882605907428,
+        "f1-score": 0.28645963268389374,
+        "support": 26509.0
+      }
+    }
+  },
+  "tfidf_lr": {
+    "macro_f1": 0.7259381278830179,
+    "weighted_f1": 0.8047983928746281,
+    "per_class": {
+      "Checking or savings account": {
+        "precision": 0.7482724580454096,
+        "recall": 0.7962184873949579,
+        "f1-score": 0.771501272264631,
+        "support": 1904.0
+      },
+      "Credit card or prepaid card": {
+        "precision": 0.7230252100840336,
+        "recall": 0.7928492443789164,
+        "f1-score": 0.7563291139240507,
+        "support": 2713.0
+      },
+      "Credit reporting, credit repair services, or other personal consumer reports": {
+        "precision": 0.9389949748743719,
+        "recall": 0.7715748616731357,
+        "f1-score": 0.8470918899315472,
+        "support": 12109.0
+      },
+      "Debt collection": {
+        "precision": 0.7256571640133284,
+        "recall": 0.8137845131824787,
+        "f1-score": 0.7671983560035228,
+        "support": 4817.0
+      },
+      "Money transfer, virtual currency, or money service": {
+        "precision": 0.7156439066551427,
+        "recall": 0.7760074976569822,
+        "f1-score": 0.7446043165467626,
+        "support": 1067.0
+      },
+      "Mortgage": {
+        "precision": 0.8662962962962963,
+        "recall": 0.9329876346230555,
+        "f1-score": 0.8984059919339351,
+        "support": 2507.0
+      },
+      "Payday loan, title loan, or personal loan": {
+        "precision": 0.353870458135861,
+        "recall": 0.6070460704607046,
+        "f1-score": 0.4471057884231537,
+        "support": 369.0
+      },
+      "Student loan": {
+        "precision": 0.5968688845401174,
+        "recall": 0.8591549295774648,
+        "f1-score": 0.7043879907621247,
+        "support": 355.0
+      },
+      "Vehicle loan or lease": {
+        "precision": 0.470995670995671,
+        "recall": 0.8143712574850299,
+        "f1-score": 0.5968184311574328,
+        "support": 668.0
+      },
+      "accuracy": 0.7985967030065261,
+      "macro avg": {
+        "precision": 0.6821805581822481,
+        "recall": 0.795999388492525,
+        "f1-score": 0.7259381278830179,
+        "support": 26509.0
+      },
+      "weighted avg": {
+        "precision": 0.8240426832165396,
+        "recall": 0.7985967030065261,
+        "f1-score": 0.8047983928746281,
+        "support": 26509.0
+      }
+    }
+  }
+}

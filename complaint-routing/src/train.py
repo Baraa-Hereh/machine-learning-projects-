@@ -68,13 +68,17 @@ class MacroF1EarlyStopping(keras.callbacks.Callback):
         if self.best_weights is not None:
             self.model.set_weights(self.best_weights)
 
-def run_name(cfg_model: dict) -> str:
-        """Name for model and report paths, e.g. 'mean' or 'mean_sdrop30'."""
-        name = cfg_model["encoder"]
-        rate = cfg_model["embed_dropout"]
-        if rate > 0:
-            name += f"_sdrop{round(rate * 100)}"
-        return name
+def run_name(cfg: dict) -> str:
+    """Name for model and report paths, e.g. 'mean_sdrop50_ng12_v50k_cw50'."""
+    m, t = cfg["model"], cfg["train"]
+    name = m["encoder"]
+    if m["embed_dropout"] > 0:
+        name += f"_sdrop{round(m['embed_dropout'] * 100)}"
+    if m["ngrams"] > 1:
+        name += f"_ng12_v{m['vocab_size'] // 1000}k"
+    if t["class_weight_power"] != 1.0:
+        name += f"_cw{round(t['class_weight_power'] * 100)}"
+    return name
 def train_one(seed: int, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg: dict, n_classes: int,
               class_weight: dict) -> dict:
     """Train one model with one seed and save it."""
@@ -88,7 +92,7 @@ def train_one(seed: int, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg: dict, n_clas
     model.fit(X_tr, y_tr, batch_size=t["batch_size"], epochs=t["max_epochs"],
               class_weight=class_weight, callbacks=[stopper], verbose=2)
 
-    name = run_name(cfg["model"])
+    name = run_name(cfg)
     out = Path(t["out_dir"]) / name / f"{name}_seed{seed}.keras"
     out.parent.mkdir(parents=True, exist_ok=True)
     model.save(out)
@@ -100,7 +104,7 @@ def train_one(seed: int, X_tr, y_tr, X_va, y_va, X_trs, y_trs, cfg: dict, n_clas
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     cfg = load_config(Path("configs/config.yaml"))
-    name = run_name(cfg["model"])
+    name = run_name(cfg)
     report = Path(cfg["train"]["report_dir"]) / f"{name}_val.json"
     logger.info("run: %s | report: %s", name, report)
 
@@ -110,7 +114,7 @@ def main() -> None:
     X_va, y_va = load_split(c["out_dir"], "val", d["text_col"], c["label_col"], labels)
 
     weights = compute_class_weight("balanced", classes=np.arange(len(labels)), y=y_tr)
-    class_weight = dict(enumerate(weights))
+    class_weight = dict(enumerate(weights ** t["class_weight_power"]))
     logger.info("class weights: %s", {labels[i][:20]: round(w, 2) for i, w in class_weight.items()})
 
     rng = np.random.default_rng(t["train_eval_seed"])

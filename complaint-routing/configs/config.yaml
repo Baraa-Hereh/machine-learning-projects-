@@ -25,8 +25,9 @@ baseline:
   min_df: 2
   C: 1.0
   max_iter: 1000
-  report_path: reports/baseline_val.json
-  model_path: models/baseline_tfidf_lr.joblib
+  report_dir: reports
+  model_dir: models/baseline
+  class_weight_power: 0.5
 labels:
   - Checking or savings account
   - Credit card or prepaid card
@@ -42,8 +43,11 @@ model:
   max_len: 420
   embed_dim: 64
   gru_units: 64
-  encoder: attention
+  encoder: mean
   embed_dropout: 0.5
+  vocab_size: 50000
+  max_len: 840
+  ngrams: 2
 
 train:
   seeds: [0]
@@ -56,3 +60,4 @@ train:
   train_eval_size: 26000
   train_eval_seed: 42
   seeds: [0, 1, 2, 3, 4]
+  class_weight_power: 0.5

@@ -1,0 +1,73 @@
+{
+  "macro_f1": 0.7567418359122335,
+  "weighted_f1": 0.8205188685721537,
+  "per_class": {
+    "Checking or savings account": {
+      "precision": 0.7316680096696213,
+      "recall": 0.7950963222416813,
+      "f1-score": 0.7620646244229963,
+      "support": 1142.0
+    },
+    "Credit card or prepaid card": {
+      "precision": 0.7291049199762892,
+      "recall": 0.8092105263157895,
+      "f1-score": 0.7670720299345183,
+      "support": 1520.0
+    },
+    "Credit reporting, credit repair services, or other personal consumer reports": {
+      "precision": 0.8824650571791613,
+      "recall": 0.8376300316598824,
+      "f1-score": 0.8594632222136283,
+      "support": 6633.0
+    },
+    "Debt collection": {
+      "precision": 0.7847313237221494,
+      "recall": 0.7740788623141565,
+      "f1-score": 0.779368695086235,
+      "support": 3094.0
+    },
+    "Money transfer, virtual currency, or money service": {
+      "precision": 0.8423028785982478,
+      "recall": 0.7665148063781321,
+      "f1-score": 0.802623732856291,
+      "support": 878.0
+    },
+    "Mortgage": {
+      "precision": 0.9051051051051051,
+      "recall": 0.9477987421383648,
+      "f1-score": 0.9259600614439324,
+      "support": 1590.0
+    },
+    "Payday loan, title loan, or personal loan": {
+      "precision": 0.5023041474654378,
+      "recall": 0.5422885572139303,
+      "f1-score": 0.5215311004784688,
+      "support": 201.0
+    },
+    "Student loan": {
+      "precision": 0.7107843137254902,
+      "recall": 0.7591623036649214,
+      "f1-score": 0.7341772151898734,
+      "support": 191.0
+    },
+    "Vehicle loan or lease": {
+      "precision": 0.59375,
+      "recall": 0.7388888888888889,
+      "f1-score": 0.6584158415841584,
+      "support": 360.0
+    },
+    "accuracy": 0.819334999039016,
+    "macro avg": {
+      "precision": 0.7424684172712781,
+      "recall": 0.7745187823128608,
+      "f1-score": 0.7567418359122335,
+      "support": 15609.0
+    },
+    "weighted avg": {
+      "precision": 0.8235175711039063,
+      "recall": 0.819334999039016,
+      "f1-score": 0.8205188685721537,
+      "support": 15609.0
+    }
+  }
+}
