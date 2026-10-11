@@ -1,0 +1,6 @@
+data:
+  raw_dir: data/raw/DeepPCB/PCBData
+  splits_dir: data/processed/splits
+  image_size: 640
+  classes: [open, short, mousebite, spur, copper, pin-hole]
+  val_groups: [group44000, group50600, group77000]
