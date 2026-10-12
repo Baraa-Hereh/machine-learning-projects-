@@ -1,0 +1,45 @@
+{
+  "split": "val",
+  "kernel": 5,
+  "margin": 15,
+  "ap50": 0.6984537891955135,
+  "ap50_95": 0.23190034836342402,
+  "simulated_shift_share_nonzero": 0.17,
+  "board_table": [
+    {
+      "threshold": 1,
+      "board_recall": 0.995,
+      "board_false_alarm": 0.005
+    },
+    {
+      "threshold": 10,
+      "board_recall": 0.995,
+      "board_false_alarm": 0.005
+    },
+    {
+      "threshold": 25,
+      "board_recall": 0.995,
+      "board_false_alarm": 0.0
+    },
+    {
+      "threshold": 50,
+      "board_recall": 0.955,
+      "board_false_alarm": 0.0
+    },
+    {
+      "threshold": 100,
+      "board_recall": 0.875,
+      "board_false_alarm": 0.0
+    },
+    {
+      "threshold": 200,
+      "board_recall": 0.58,
+      "board_false_alarm": 0.0
+    },
+    {
+      "threshold": 400,
+      "board_recall": 0.18,
+      "board_false_alarm": 0.0
+    }
+  ]
+}

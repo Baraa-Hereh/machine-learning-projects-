@@ -40,7 +40,7 @@ Recall is the priority, with a ceiling on false alarms; otherwise the operator w
 **Target:** set after the baseline is measured, in the same form as the main comparison:
 - higher board recall than the baseline at an equal or lower board false-alarm rate, and
 - a mAP@0.5 target agreed once the baseline and a first model are measured.
-
+**Update (12 October 2026):** baseline measured; targets set in `reports/baseline.md`, section 6.
 ## 5. Constraints
 
 | Constraint | Value | Reason |
