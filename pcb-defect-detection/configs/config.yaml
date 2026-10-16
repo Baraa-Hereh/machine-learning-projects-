@@ -4,6 +4,7 @@ data:
   image_size: 640
   classes: [open, short, mousebite, spur, copper, pin-hole]
   val_groups: [group44000, group50600, group77000]
+  coco_dir: data/processed/coco
 baseline:
   kernel_sizes: [3, 5, 7]
   margins: [9, 12, 15, 18, 21, 24, 30]
