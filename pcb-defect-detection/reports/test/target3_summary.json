@@ -1,0 +1,29 @@
+{
+  "split": "test",
+  "experiment": "pcb_yolox_s_neg_e50",
+  "ensemble_seeds": [
+    0,
+    1
+  ],
+  "score": "obj",
+  "board_threshold": 0.81,
+  "n_boards": 500,
+  "board_recall": 1.0,
+  "n_missed": 0,
+  "board_false_alarm_all_refs": 0.022,
+  "n_false_alarm_all_refs": 11,
+  "flagged_refs": [
+    "group50600/50600/50600055_temp.jpg",
+    "group50600/50600/50600067_temp.jpg",
+    "group90100/90100/90100042_temp.jpg",
+    "group12100/12100/12100185_temp.jpg",
+    "group12300/12300/12300076_temp.jpg",
+    "group12300/12300/12300145_temp.jpg",
+    "group12300/12300/12300148_temp.jpg",
+    "group12000/12000/12000001_temp.jpg",
+    "group12000/12000/12000085_temp.jpg",
+    "group12000/12000/12000187_temp.jpg",
+    "group12000/12000/12000593_temp.jpg"
+  ],
+  "missed_boards": []
+}

@@ -1,0 +1,59 @@
+{
+  "split": "val",
+  "checkpoint": "models/yolox/pcb_yolox_s_e50_seed2/best_ckpt.pth",
+  "class_agnostic": true,
+  "ap50": 0.9556878712483003,
+  "ap50_95": 0.7500569726538474,
+  "board_table": [
+    {
+      "threshold": 0.05,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.59
+    },
+    {
+      "threshold": 0.1,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.51
+    },
+    {
+      "threshold": 0.2,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.43
+    },
+    {
+      "threshold": 0.3,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.385
+    },
+    {
+      "threshold": 0.4,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.32
+    },
+    {
+      "threshold": 0.5,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.29
+    },
+    {
+      "threshold": 0.6,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.23
+    },
+    {
+      "threshold": 0.7,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.195
+    },
+    {
+      "threshold": 0.8,
+      "board_recall": 1.0,
+      "board_false_alarm": 0.125
+    },
+    {
+      "threshold": 0.9,
+      "board_recall": 0.69,
+      "board_false_alarm": 0.0
+    }
+  ]
+}

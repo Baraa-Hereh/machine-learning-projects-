@@ -1,0 +1,19 @@
+{
+  "split": "test (seen before, v1)",
+  "seed": 0,
+  "N": 10,
+  "threshold": 0.91,
+  "board_recall": 0.998,
+  "n_missed": 1,
+  "spurious_fa_all": 0.002,
+  "n_spurious_all": 1,
+  "spurious_fa_excl": 0.002008032128514056,
+  "n_spurious_excl": 1,
+  "n_excl_boards": 498,
+  "missed_boards": [
+    "group20085/20085/20085311_test.jpg"
+  ],
+  "spurious_boards": [
+    "group90100/90100/90100026_test.jpg"
+  ]
+}

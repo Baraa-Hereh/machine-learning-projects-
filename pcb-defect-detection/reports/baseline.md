@@ -80,5 +80,31 @@ Each validation reference received a shift drawn from the 0–3 px distribution 
 ## 6. Targets for the detection model
 
 1. **Class-agnostic AP@0.5** above 0.698, by more than the seed-to-seed variation (measured on the first model with five seeds).
-2. **mAP@0.5 with defect types:** target set after the first model, as agreed in the brief.
+2. **Target 2 (secondary): class-aware mAP@0.5 on the test set**
+
+- Target: class-aware mAP@0.5 on the test set >= **0.928**, for each of the two
+  ensemble models (seeds 0 and 1), measured with the official YOLOX COCO evaluator.
+- Derivation: validation mean over 5 seeds (0.9396) minus 2 x standard deviation (0.0059).
+  Per-seed validation values: 0.935, 0.940, 0.933, 0.948, 0.942.
+- Purpose: a non-regression check. It confirms that defect-type recognition does not
+  collapse on unseen boards. The client needs the defect type only approximately;
+  the primary goal is detecting defective boards (Target 3).
+- Why per model: the ensemble averages board-level scores only, not class predictions,
+  so class-aware mAP is measured on each model separately.
+  **Test-set reference image procedure (fixed before running the test evaluation)**
+
+1. Every reference image with ensemble board score >= 0.81 is inspected.
+2. Each one is compared with its test image at the same location, using fixed
+   design features as anchors, and checked against the test label file.
+3. Classification:
+   - Case 1: feature present in both images and not labeled -> kept as a false alarm,
+     sent for expert review.
+   - Case 2: feature present in the reference only -> reference is contaminated,
+     excluded from the false-alarm count.
+   - Case 3: feature present in both images and labeled as a defect in the test image
+     -> reference is contaminated, excluded from the false-alarm count.
+4. Both numbers are reported: false-alarm rate on all reference images, and on the
+   reference images left after exclusions, with every excluded image listed by name.
+5. No other changes are made after seeing test results (threshold, models, seeds,
+   score mode stay as fixed in configs/config.yaml).
 3. **Board level:** recall ≥ 99.5% at a false-alarm rate ≤ 0.5%, i.e. no worse than the baseline. A higher board recall cannot be shown on this data: at most one board of 200 is left to improve.
