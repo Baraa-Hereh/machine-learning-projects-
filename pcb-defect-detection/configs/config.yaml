@@ -28,3 +28,5 @@ final:
     min_white_pixels: 10
     board_threshold: 0.91
     preprocess: "median 3x3 + phase-correlation alignment"
+    fallback_threshold: 0.81
+    candidate_threshold: 0.30

@@ -1,0 +1,24 @@
+ref_img,case,note
+group50600/50600/50600055_temp.jpg,,
+group50600/50600/50600067_temp.jpg,,
+group90100/90100/90100042_temp.jpg,,
+group12100/12100/12100185_temp.jpg,,
+group12300/12300/12300076_temp.jpg,,
+group12300/12300/12300145_temp.jpg,,
+group12300/12300/12300148_temp.jpg,,
+group12000/12000/12000001_temp.jpg,,
+group12000/12000/12000085_temp.jpg,,
+group12000/12000/12000187_temp.jpg,,
+group12000/12000/12000593_temp.jpg,,
+group12000/12000/12000001_temp.jpg,1,oval double-hole pad (design feature) flagged; present in both images; not labeled
+group12000/12000/12000085_temp.jpg,1,round holes in copper area and other design features flagged (up to 0.99); present in both; not labeled
+group12000/12000/12000085_temp.jpg,1,design holes look like pin-hole defects; model has no reference so cannot tell them apart; present in both; not labeled
+group12000/12000/12000187_temp.jpg,1,same design features as 12000085 (round holes, oval pads, curved trace) flagged again; present in both; not labeled
+group12000/12000/12000593_temp.jpg,1,round holes in copper (up to 0.98) and small round pads on curved traces flagged; same pattern as 12000085; present in both; not labeled
+group12100/12100/12100185_temp.jpg,2,small hole in copper on reference only; not present in test at same location (labeled pin-hole in test is a different hole ~25 px away); reference contaminated
+group12300/12300/12300076_temp.jpg,1,narrow neck with V-notch connecting trace to round pad (design) flagged; present in both; the labeled open in test is a break on that neck that is NOT in the reference; kept as false alarm, expert review
+group12300/12300/12300145_temp.jpg,1,rounded copper bump on pad edge (design) flagged at 0.98; looks like a spur; present in both; not labeledgroup12300/12300/12300148_temp.jpg,1,thin neck between round pad and bar flagged at 0.98; present in both, but the neck is wider in test than in reference; similar thin necks elsewhere in the design suggest design; ambiguous, kept as false alarm, expert review
+group12300/12300/12300148_temp.jpg,1,thin neck between round pad and bar flagged at 0.98; present in both, but the neck is wider in test than in reference; similar thin necks elsewhere in the design suggest design; ambiguous, kept as false alarm, expert review
+group50600/50600/50600055_temp.jpg,2,small white blob on line edge in reference only (0.98, both seeds) caused the alarm; not in test; other boxes (0.94, 0.52, seed 0 only) are thin necks present in both and do not reach the threshold alone; reference contaminated
+group50600/50600/50600067_temp.jpg,1,thin narrowing white gap lines between copper areas flagged (three boxes, same pattern; top box from both seeds caused the alarm); present in both; not labeled
+group90100/90100/90100042_temp.jpg,1,small isolated round copper pads (design) flagged at 0.90-0.95 by both seeds; identical in shape to the labeled copper defect elsewhere in test; present in both; not labeled

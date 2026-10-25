@@ -1,5 +1,7 @@
 data/
 models/
 third_party/
+references/
+result.png
 reports/**/*.png
 !reports/figures/*.png

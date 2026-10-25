@@ -1,0 +1,110 @@
+PCB DEFECT DETECTION - PROJECT SUMMARY
+======================================
+
+30-SECOND VERSION
+-----------------
+A system that inspects PCB images: it flags defective boards and locates and
+classifies each defect. The client needs >= 99.5% of defective boards caught
+with <= 0.5% false alarms. A fine-tuned YOLOX-S detector was very accurate at
+locating defects but raised false alarms on design features. Image inspection
+showed the cause: the detector never sees the reference image, so it cannot
+tell a design feature from a defect. Combining it with a reference check, plus
+alignment and a noise filter added after a stress test, gave 99.8% recall and
+0.2% false alarms at 32 ms per board.
+
+
+1. PROBLEM
+----------
+Client:   PCB manufacturer.
+Need:     catch defective boards before they move down the line.
+Priority: a missed defect costs far more than a false alarm.
+Data:     DeepPCB, 1500 image pairs (board image + clean reference image),
+          6 defect types: open, short, mousebite, spur, copper, pin-hole.
+
+
+2. TARGETS (fixed before any result)
+------------------------------------
+Target   Metric                        Condition
+1        Class-agnostic AP@0.5         above baseline by more than seed std
+2        Class-aware mAP@0.5           >= 0.928 per model (secondary)
+3        Board recall / false alarm    >= 99.5% / <= 0.5% at one threshold
+-        Latency                       <= 50 ms per board
+
+
+3. BASELINE
+-----------
+Method: absdiff(board, reference) -> threshold 127 -> opening -> components.
+Result: met Target 3, but weak localization (AP@0.5 0.698 val, 0.589 test)
+        and no defect type.
+
+
+4. DETECTOR (v1)
+----------------
+Model:     YOLOX-S (Apache-2.0 licence), pretrained on COCO.
+Training:  full fine-tuning (all weights updated; class head replaced 80 -> 6).
+           Augmentation limited to changes that happen in reality
+           (no colour changes on binary images).
+           Clean reference images added as negative examples.
+           5 seeds per experiment, compared with mean +- std.
+
+
+5. DIAGNOSIS
+------------
+- Inspected every stable false alarm image by image with a fixed procedure.
+- Found contaminated reference images (3 in val, 2 in test).
+- Main cause: design features that look like defect types
+  (holes ~ pin-hole, round pads ~ copper, bumps ~ spur, thin necks ~ mousebite).
+- The detector never sees the reference, so this is a limit of the approach,
+  not of training.
+- Tried and rejected: removing class confidence (no change),
+  2-model ensemble (helped on val, not on test).
+
+
+6. v1 ON TEST
+-------------
+Target   Result                          Met
+1        0.977 vs baseline 0.589         yes
+2        0.963 and 0.966                 yes
+3        recall 100%, false alarm 1.81%  no
+
+
+7. v2: DETECTOR + REFERENCE CHECK
+---------------------------------
+Idea:   the detector answers what and where; the reference answers
+        whether it differs from the design.
+Method: for each detector box, count pixels that differ from the reference;
+        drop the box if the count < N.
+Stress test (results looked too perfect):
+        shifted board images by 1-3 px and added pixel noise.
+        Without alignment the check failed at 3 px; with noise the detector
+        collapsed.
+Fix:    preprocessing = median filter 3x3 + image registration.
+Chosen: single model (seed 0), N = 10, threshold 0.91, picked from the
+        worst case over 6 stress scenarios on validation.
+
+
+8. FINAL RESULTS (test)
+-----------------------
+                    v1         v2
+Recall              100%       99.8%
+False alarm         1.81%      0.20%
+Target 3            no         yes
+Latency (p95, GPU)  -          31.8 ms
+
+Note: v2 was run on a test set already seen during v1, so it is not a clean
+held-out result.
+
+
+9. KEY LESSONS
+--------------
+1. Build a baseline first; write targets before results.
+2. Touch the test set once; fix every decision before it.
+3. Use several seeds and the std before calling anything an improvement.
+4. Looking at images finds what numbers cannot: numbers say where, images
+   say why.
+5. A correct diagnosis points to the fix: missing information (the
+   reference), not missing training.
+6. When a result looks perfect, doubt it; the stress test found two
+   problems before they reached the client.
+7. Prefer the simpler solution unless the complex one wins clearly
+   (single model over ensemble).

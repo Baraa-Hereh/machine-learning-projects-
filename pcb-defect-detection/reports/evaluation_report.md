@@ -27,3 +27,12 @@ Because the test set was already used for v1, this is not a clean held-out resul
   (x 8-39) that the detector did not see at all (score 0.00), and one seen at
   0.86, below the 0.91 threshold. Both pass the reference check. Known weakness:
   defects at the image border.
+
+  ## Latency (v2, GPU, validation images, 10 warm-up excluded)
+| stage | p50 | p95 |
+|---|---|---|
+| prepare (median + alignment) | 9.3 ms | 10.3 ms |
+| detector | 17.7 ms | 21.5 ms |
+| reference check | 0.7 ms | 1.2 ms |
+| total | 27.8 ms | 31.8 ms |
+p95 total 31.8 ms <= 50 ms: requirement met on GPU. CPU not measured yet.
