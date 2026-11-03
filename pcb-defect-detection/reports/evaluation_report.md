@@ -26,3 +26,12 @@ Not a clean held-out result: the test set was used for v1.
 - Worst case in the 6-scenario stress test at threshold 0.94: false alarms 3/197 (1.52%).
 - Previous setting (kernel 5) gave 1/500 false alarms on test but erased 111 of
   1185 validation defects from the difference image; replaced on 2026-11-03.
+  ## Latency and hardware
+- GPU (PyTorch, v2 full pipeline): p95 31.8 ms <= 50 ms. Requirement met.
+- CPU (ONNX Runtime, detector only): p95 137 ms (PyTorch on CPU: 256 ms);
+  with preprocessing about 146 ms per board (~7 boards/s). Requirement not met on CPU.
+- ONNX output verified identical to PyTorch on 50 validation images
+  (same boxes, IoU 1.0, score difference 0).
+- Options if the client has no GPU, not done yet:
+  1. INT8 quantization of the ONNX model (~2x expected; must be re-validated).
+  2. Smaller model (YOLOX-Nano, ~3x expected; needs retraining and a new v2 selection).

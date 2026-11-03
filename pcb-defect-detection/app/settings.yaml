@@ -1,0 +1,12 @@
+model: ../models/onnx/pcb_yolox_s_neg_e50_seed0.onnx
+references: ../references
+classes: [open, short, mousebite, spur, copper, pin-hole]
+input_size: [640, 640]
+score: obj
+conf_thre: 0.001
+nms_thre: 0.65
+diff_kernel: 3
+min_white_pixels: 10
+board_threshold: 0.94
+candidate_threshold: 0.30
+fallback_threshold: 0.81
