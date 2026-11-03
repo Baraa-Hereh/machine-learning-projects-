@@ -61,7 +61,7 @@ class Inspector:
 
         boxes, scores, classes = self._detect(img)
         if ref is not None:
-            mask = diff_mask(img, ref, self.final["baseline_kernel"])
+            mask = diff_mask(img, ref, self.v2["diff_kernel"])
             keep = np.array([white_count(mask, b) >= self.v2["min_white_pixels"] for b in boxes], bool)
         else:
             keep = np.ones(len(boxes), bool)

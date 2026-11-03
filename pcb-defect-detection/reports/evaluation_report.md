@@ -13,26 +13,16 @@
   Cause: the detector never sees the reference, so design features that look
   like defects (holes, round pads, bumps, thin necks) raise alarms.
 
-## v2 — detector + reference check
-**Target 3 — v2 on the test set (seen before, during v1):**
-board recall 99.8% (499/500) >= 99.5%; false-alarm rate 0.20% (1/500, and
-1/498 after excluding the 2 contaminated references) <= 0.5%. **Target 3 met.**
-Because the test set was already used for v1, this is not a clean held-out result.
+**Target 3 — v2 on the test set (seen before, during v1), kernel 3, N 10, threshold 0.94:**
+board recall 99.8% (499/500) >= 99.5%; false-alarm rate 0.40% (2/500, and 2/498
+after excluding the 2 contaminated references) <= 0.5%. **Target 3 met.**
+Not a clean held-out result: the test set was used for v1.
 
-- The single test false alarm (90100026) is on a short isolated trace segment that
-  passed the reference check (real difference vs the reference); likely an
-  unlabeled open defect. Counted as a false alarm; sent for expert review.
-
-  - The single missed board (20085311) has 2 defects: one at the left image border
-  (x 8-39) that the detector did not see at all (score 0.00), and one seen at
-  0.86, below the 0.91 threshold. Both pass the reference check. Known weakness:
-  defects at the image border.
-
-  ## Latency (v2, GPU, validation images, 10 warm-up excluded)
-| stage | p50 | p95 |
-|---|---|---|
-| prepare (median + alignment) | 9.3 ms | 10.3 ms |
-| detector | 17.7 ms | 21.5 ms |
-| reference check | 0.7 ms | 1.2 ms |
-| total | 27.8 ms | 31.8 ms |
-p95 total 31.8 ms <= 50 ms: requirement met on GPU. CPU not measured yet.
+- False alarms: 90100026 (short isolated trace segment that passed the reference
+  check; likely an unlabeled open, sent for expert review) and 12000068 (round
+  design hole; small edge residue survives the kernel-3 opening).
+- Missed board: 20085311 (one defect at the image border not detected; one seen
+  at 0.86, below threshold).
+- Worst case in the 6-scenario stress test at threshold 0.94: false alarms 3/197 (1.52%).
+- Previous setting (kernel 5) gave 1/500 false alarms on test but erased 111 of
+  1185 validation defects from the difference image; replaced on 2026-11-03.

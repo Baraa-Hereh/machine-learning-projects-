@@ -38,6 +38,7 @@ def add_noise(img, p, rng):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--prepare", action="store_true")
+    parser.add_argument("--kernel", type=int, default=5)
     args = parser.parse_args()
 
     cfg, root = load_config(ROOT / "configs/config.yaml")
@@ -51,10 +52,10 @@ def main():
     ckpt = ROOT / f"models/yolox/{final['experiment']}_seed{SEED}/best_ckpt.pth"
     model, exp = load_model(ROOT / f"exps/{final['experiment']}.py", ckpt, device)
 
-    rows = []
+    rows, erased_rows = [], []
     for name, dx, dy, p in SCENARIOS:
         rng = np.random.default_rng(RNG_SEED)
-        items = []
+        items, label_white = [], []
         for _, r in val.iterrows():
             board = cv2.imread(str(raw / r["test_img"]), cv2.IMREAD_GRAYSCALE)
             ref = cv2.imread(str(raw / r["ref_img"]), cv2.IMREAD_GRAYSCALE)
@@ -71,14 +72,18 @@ def main():
                     gt[:, [0, 2]] += ox
                     gt[:, [1, 3]] += oy
 
-            mask = diff_mask(board, ref, final["baseline_kernel"])
+            mask = diff_mask(board, ref, args.kernel)
+            label_white += [white_count(mask, g) for g in gt]
             boxes, scores = detect(model, exp, cv2.cvtColor(board, cv2.COLOR_GRAY2BGR),
                                    device, final["score"])
             counts = np.array([white_count(mask, b) for b in boxes], dtype=int)
             spurious = np.array([not touches_gt(b, gt) for b in boxes], dtype=bool)
             items.append((scores, counts, spurious))
 
+        label_white = np.array(label_white)
         for n in N_GRID:
+            erased_rows.append({"scenario": name, "N": n, "n_erased": int((label_white < n).sum()),
+                                "n_defects": int(len(label_white))})
             best, spur = board_scores(items, n)
             for t in THRESHOLDS:
                 rows.append({"scenario": name, "N": n, "threshold": t,
@@ -88,25 +93,23 @@ def main():
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(rows)
-    suffix = "_prepared" if args.prepare else ""
+    er = pd.DataFrame(erased_rows)
+    suffix = f"{'_prepared' if args.prepare else ''}_k{args.kernel}"
     df.to_csv(OUT_DIR / f"v2_stress_grid{suffix}.csv", index=False)
-
-    for name, *_ in SCENARIOS:
-        print(f"\n=== {name} ===")
-        sub = df[(df["scenario"] == name) & (df["recall"] >= TARGET_RECALL)]
-        for n, g in sub.groupby("N"):
-            m = g["n_false_alarm"].min()
-            best = g[g["n_false_alarm"] == m]["threshold"]
-            print(f"  N={n:<4} min FA {m:>3} / {clean.sum()}   thresholds {best.min():.2f} .. {best.max():.2f}")
+    er.to_csv(OUT_DIR / f"v2_erased{suffix}.csv", index=False)
 
     worst = df.groupby(["N", "threshold"]).agg(
         worst_recall=("recall", "min"), worst_fa=("n_false_alarm", "max")).reset_index()
+    worst_erased = er.groupby("N")["n_erased"].max()
     ok = worst[worst["worst_recall"] >= TARGET_RECALL]
-    print("\n=== robust (worst case over all scenarios) ===")
+
+    print(f"\n=== kernel {args.kernel}: robust (worst case over all scenarios) ===")
+    print(f"defects in val: {er['n_defects'].iloc[0]}")
     for n, g in ok.groupby("N"):
         m = g["worst_fa"].min()
         best = g[g["worst_fa"] == m]["threshold"]
-        print(f"  N={n:<4} worst FA {m:>3} / {clean.sum()}   thresholds {best.min():.2f} .. {best.max():.2f}")
+        print(f"  N={n:<4} worst FA {m:>3} / {clean.sum()}   thresholds {best.min():.2f} .. {best.max():.2f}"
+              f"   worst erased {worst_erased[n]:>4}")
 
 
 if __name__ == "__main__":

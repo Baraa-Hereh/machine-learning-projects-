@@ -26,7 +26,7 @@ def main(name):
     board = cv2.imread(str(raw / r["test_img"]), cv2.IMREAD_GRAYSCALE)
     ref = cv2.imread(str(raw / r["ref_img"]), cv2.IMREAD_GRAYSCALE)
     board, ref, (ox, oy) = prepare(board, ref)
-    mask = diff_mask(board, ref, final["baseline_kernel"])
+    mask = diff_mask(board, ref,v2["diff_kernel"])
     boxes, scores = detect(model, exp, cv2.cvtColor(board, cv2.COLOR_GRAY2BGR), device, final["score"])
 
     print(f"offset {ox, oy}")

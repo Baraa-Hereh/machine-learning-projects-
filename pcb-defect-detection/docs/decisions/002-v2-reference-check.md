@@ -52,3 +52,15 @@ Result on validation: both reach 0 false alarms with recall >= 99.5%
 - N = 10, threshold = 0.91: middle of the region that keeps recall >= 99.5% with
   at most 1/197 false alarm in the worst of 6 stress scenarios
   (none, shift 1/2/3 px, noise 0.2%, shift 2 px + noise).
+  ## Revision 2026-11-03: difference-mask kernel
+- Problem found while testing the API: opening with kernel 5 erased thin
+  defects (e.g. mousebite) from the difference image, so the reference check
+  removed true defects the detector saw at 0.99.
+- Stress test with kernel 1 / 3 / 5 (worst case over 6 scenarios, N = 10):
+  kernel 1: worst FA 7/197, 0 defects erased
+  kernel 3: worst FA 1-3/197, 1 of 1185 defects erased
+  kernel 5: worst FA 1/197, 111 of 1185 defects erased (~9%)
+- Decision: kernel 3, N = 10, threshold 0.94 (0.03 below the recall edge at 0.97).
+  Worst-case stress false alarm at 0.94: 3/197 (1.52%).
+- Reason: a single thin defect on a real board would be erased by kernel 5,
+  and the board would pass as clean.

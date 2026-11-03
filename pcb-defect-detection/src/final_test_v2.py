@@ -41,7 +41,7 @@ def main():
             gt[:, [0, 2]] += ox
             gt[:, [1, 3]] += oy
 
-        mask = diff_mask(board, ref, final["baseline_kernel"])
+        mask = diff_mask(board, ref, v2["diff_kernel"])
         boxes, scores = detect(model, exp, cv2.cvtColor(board, cv2.COLOR_GRAY2BGR), device, final["score"])
         for b, s in zip(boxes, scores):
             if white_count(mask, b) < n_min:
